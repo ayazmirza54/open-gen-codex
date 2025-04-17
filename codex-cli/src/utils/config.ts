@@ -37,6 +37,32 @@ export const OPENAI_BASE_URL : any = process.env["OPENAI_BASE_URL"] || "";
 export let OPENAI_API_KEY : any = process.env["OPENAI_API_KEY"];
 export let GOOGLE_API_KEY : any = process.env["GOOGLE_API_KEY"];
 
+// Load API keys from .env if not already set in process.env
+try {
+  // If the keys aren't set yet, try to load them from dotenv
+  if (!OPENAI_API_KEY || !GOOGLE_API_KEY) {
+    const fs = require('fs');
+    const path = require('path');
+    const dotenv = require('dotenv');
+    
+    // Try to load from .env file in the current directory
+    const envPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const envConfig = dotenv.parse(fs.readFileSync(envPath));
+      if (envConfig['OPENAI_API_KEY'] && !OPENAI_API_KEY) {
+        OPENAI_API_KEY = envConfig['OPENAI_API_KEY'];
+        process.env.OPENAI_API_KEY = envConfig['OPENAI_API_KEY']; 
+      }
+      if (envConfig['GEMINI_API_KEY'] && !GOOGLE_API_KEY) {
+        GOOGLE_API_KEY = envConfig['GEMINI_API_KEY'];
+        process.env.GOOGLE_API_KEY = envConfig['GEMINI_API_KEY'];
+      }
+    }
+  }
+} catch (error) {
+  console.warn("Failed to load API keys from .env file:", error);
+}
+
 export function setApiKey(apiKey: string): void {
   OPENAI_API_KEY = apiKey;
 }

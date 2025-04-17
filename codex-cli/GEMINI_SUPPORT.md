@@ -19,7 +19,7 @@ The following Gemini models are supported:
 
 - `gemini-1.5-pro` - Recommended for most coding tasks
 - `gemini-1.5-flash` - Faster, but less capable
-- `gemini-pro` - Legacy model (Gemini 1.0)
+- `gemini-2.5-pro-preview-03-25` - Legacy model (Gemini 1.0)
 
 ## Usage
 

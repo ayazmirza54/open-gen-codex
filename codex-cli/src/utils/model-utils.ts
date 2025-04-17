@@ -3,7 +3,13 @@ import OpenAI from "openai";
 
 const MODEL_LIST_TIMEOUT_MS = 2_000; // 2 seconds
 export const RECOMMENDED_MODELS: Array<string> = ["o4-mini", "o3"];
-export const GEMINI_MODELS: Array<string> = ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-pro"];
+export const GEMINI_MODELS: Array<string> = [
+  "gemini-1.5-pro", 
+  "gemini-1.5-flash", 
+  "gemini-1.5-pro-latest",
+  "gemini-2.5-pro-preview-03-25", 
+  "gemini-pro"
+];
 
 /**
  * Background model loader / cache.

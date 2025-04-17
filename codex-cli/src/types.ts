@@ -4,6 +4,12 @@
 export type ChatMessage = {
   role: 'user' | 'assistant' | 'system';
   content: string;
+  function_call?: {
+    name: string;
+    arguments: string;
+  };
+  function_result?: string | object;
+  function_name?: string;
 };
 
 /**
