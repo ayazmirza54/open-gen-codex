@@ -19,7 +19,7 @@
     "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
     "build": "node build.mjs",
-    "build:dev": "NODE_ENV=development node build.mjs --dev && NODE_OPTIONS=--enable-source-maps node dist/cli-dev.js",
+    "build:dev": "npx cross-env NODE_ENV=development node build.mjs --dev && npx cross-env NODE_OPTIONS=--enable-source-maps node dist/cli-dev.js",
     "release:readme": "cp ../README.md ./README.md",
     "release:version": "codex -a full-auto 'update the CLI_VERSION in codex-cli/src/utils/session.ts and the version in package.json to use the current timestamp (YYMMDDHHmm format)'",
     "release": "npm run release:readme && npm run release:version && npm run build && npm publish"
@@ -30,7 +30,8 @@
     "src"
   ],
   "dependencies": {
-    "@google/generative-ai": "^0.24.0",
+    "@google/genai": "^0.8.0",
+    "@google/generative-ai": "^0.2.1",
     "@inkjs/ui": "^2.0.0",
     "chalk": "^5.2.0",
     "diff": "^7.0.0",

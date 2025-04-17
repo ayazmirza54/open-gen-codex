@@ -385,3 +385,29 @@ export const saveConfig = (
 
   writeFileSync(instructionsPath, config.instructions, "utf-8");
 };
+
+async function getGoogleApiKey(): Promise<string> {
+    const config = loadConfig();
+
+    // Check all possible sources
+    const envApiKey = process.env["GOOGLE_API_KEY"];
+    const configApiKey = config.googleApiKey;
+    const globalApiKey = GOOGLE_API_KEY;
+
+    // Log debug info
+    console.log("Gemini API Key sources:");
+    console.log("- Environment variable:", envApiKey ? "Present" : "Not found");
+    console.log("- Config file:", configApiKey ? "Present" : "Not found");
+    console.log("- Global variable:", globalApiKey ? "Present" : "Not found");
+
+    // Try to load from all sources
+    const apiKey = globalApiKey || envApiKey || configApiKey;
+
+    if (!apiKey) {
+        console.error("Google API Key not found in any location.");
+        throw new Error('Google API Key not found. Set GOOGLE_API_KEY environment variable, create a .env file with GEMINI_API_KEY, or set googleApiKey in config.');
+    }
+
+    console.log("Using Gemini API Key:", apiKey.substring(0, 4) + "..." + apiKey.substring(apiKey.length - 4));
+    return apiKey;
+}
