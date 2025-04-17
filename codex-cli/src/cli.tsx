@@ -205,19 +205,7 @@ if (cli.flags.config) {
 // ---------------------------------------------------------------------------
 
 const apiKey = process.env["OPENAI_API_KEY"];
-
-if (!apiKey) {
-  // eslint-disable-next-line no-console
-  console.error(
-    `\n${chalk.red("Missing OpenAI API key.")}\n\n` +
-    `Set the environment variable ${chalk.bold("OPENAI_API_KEY")} ` +
-    `and re-run this command.\n` +
-    `You can create a key here: ${chalk.bold(
-      chalk.underline("https://platform.openai.com/account/api-keys"),
-    )}\n`,
-  );
-  process.exit(1);
-}
+const googleApiKey = process.env["GOOGLE_API_KEY"];
 
 const fullContextMode = Boolean(cli.flags.fullContext);
 let config = loadConfig(undefined, undefined, {
@@ -233,9 +221,33 @@ const imagePaths = cli.flags.image as Array<string> | undefined;
 
 config = {
   apiKey,
+  googleApiKey,
   ...config,
   model: model ?? config.model,
 };
+
+// Check if the selected model is a Gemini model and warn if no Google API key
+if (model && model.startsWith("gemini") && !googleApiKey) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    `\n${chalk.yellow("Warning: Missing Google API key for Gemini model.")}\n\n` +
+    `Set the environment variable ${chalk.bold("GOOGLE_API_KEY")} ` +
+    `to use Gemini models.\n`
+  );
+}
+// Only check OpenAI models if not using Gemini
+else if (!model?.startsWith("gemini") && !apiKey) {
+  // eslint-disable-next-line no-console
+  console.error(
+    `\n${chalk.red("Missing OpenAI API key.")}\n\n` +
+    `Set the environment variable ${chalk.bold("OPENAI_API_KEY")} ` +
+    `and re-run this command.\n` +
+    `You can create a key here: ${chalk.bold(
+      chalk.underline("https://platform.openai.com/account/api-keys"),
+    )}\n`,
+  );
+  process.exit(1);
+}
 
 if (!(await isModelSupportedForResponses(config.model))) {
   // eslint-disable-next-line no-console

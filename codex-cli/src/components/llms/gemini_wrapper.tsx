@@ -3,8 +3,7 @@ import {
     GoogleGenerativeAI,
     GenerateContentRequest,
     Content,
-    Part,
-    GenerateContentResponse, // Use this for streaming type info
+    // Remove unused imports
     // ... other necessary types
 } from '@google/generative-ai';
 import { loadConfig, GOOGLE_API_KEY } from '../../utils/config';
